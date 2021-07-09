@@ -1,0 +1,91 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt  DateTime   @default(now())
+  firstName  String?
+  id         String     @id @default(cuid())
+  lastName   String?
+  password   String
+  properties Property[]
+  roles      String[]
+  updatedAt  DateTime   @updatedAt
+  username   String     @unique
+}
+
+model Property {
+  carpet            Int?
+  cities            City[]
+  configurations    Configuration[]
+  constructionstart DateTime?
+  createdAt         DateTime              @default(now())
+  description       String
+  id                String                @id @default(cuid())
+  isfeatured        Boolean?
+  ispopular         Boolean?
+  isPromoted        Boolean?
+  localities        Locality[]
+  parking           Int?
+  pin               String
+  possession        DateTime?
+  postedBy          EnumPropertyPostedBy?
+  projectaddress    String
+  projectname       String
+  promoteduntil     DateTime?
+  state             String?
+  status            EnumPropertyStatus?
+  type              EnumPropertyType?
+  updatedAt         DateTime              @updatedAt
+  user              User[]
+}
+
+model Configuration {
+  bhktype   String
+  createdAt DateTime   @default(now())
+  id        String     @id @default(cuid())
+  price     Float?
+  property  Property[]
+  updatedAt DateTime   @updatedAt
+}
+
+model Locality {
+  createdAt DateTime   @default(now())
+  id        String     @id @default(cuid())
+  name      String
+  property  Property[]
+  slug      String?
+  updatedAt DateTime   @updatedAt
+}
+
+model City {
+  createdAt DateTime   @default(now())
+  id        String     @id @default(cuid())
+  name      String
+  property  Property[]
+  slug      String?
+  updatedAt DateTime   @updatedAt
+}
+
+enum EnumPropertyPostedBy {
+  Owner
+  Agent
+  Developer
+}
+
+enum EnumPropertyStatus {
+  ReadtToMove
+  UnderConstruction
+  Resale
+}
+
+enum EnumPropertyType {
+  Luxury
+  Premium
+  Affordable
+}
