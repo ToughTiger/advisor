@@ -1,0 +1,242 @@
+[
+  {
+    "role": "developer",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "Property",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "Property",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Property",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "Property",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "Property",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "Property",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Property",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "Property",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "Property",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "Property",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Property",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "Property",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "Property",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "Property",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Property",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "Property",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "developer",
+    "resource": "Property",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "agent",
+    "resource": "Property",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Property",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "superuser",
+    "resource": "Property",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]
