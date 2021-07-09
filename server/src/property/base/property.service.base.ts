@@ -2,10 +2,10 @@ import { PrismaService } from "nestjs-prisma";
 import {
   Prisma,
   Property,
-  City,
   Configuration,
-  Locality,
   User,
+  City,
+  Locality,
 } from "@prisma/client";
 
 export class PropertyServiceBase {
@@ -43,17 +43,6 @@ export class PropertyServiceBase {
     return this.prisma.property.delete(args);
   }
 
-  async findCities(
-    parentId: string,
-    args: Prisma.CityFindManyArgs
-  ): Promise<City[]> {
-    return this.prisma.property
-      .findUnique({
-        where: { id: parentId },
-      })
-      .cities(args);
-  }
-
   async findConfigurations(
     parentId: string,
     args: Prisma.ConfigurationFindManyArgs
@@ -65,17 +54,6 @@ export class PropertyServiceBase {
       .configurations(args);
   }
 
-  async findLocalities(
-    parentId: string,
-    args: Prisma.LocalityFindManyArgs
-  ): Promise<Locality[]> {
-    return this.prisma.property
-      .findUnique({
-        where: { id: parentId },
-      })
-      .localities(args);
-  }
-
   async findUser(
     parentId: string,
     args: Prisma.UserFindManyArgs
@@ -85,5 +63,21 @@ export class PropertyServiceBase {
         where: { id: parentId },
       })
       .user(args);
+  }
+
+  async getCities(parentId: string): Promise<City | null> {
+    return this.prisma.property
+      .findUnique({
+        where: { id: parentId },
+      })
+      .cities();
+  }
+
+  async getLocalities(parentId: string): Promise<Locality | null> {
+    return this.prisma.property
+      .findUnique({
+        where: { id: parentId },
+      })
+      .localities();
   }
 }

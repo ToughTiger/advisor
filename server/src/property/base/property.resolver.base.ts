@@ -14,14 +14,12 @@ import { DeletePropertyArgs } from "./DeletePropertyArgs";
 import { PropertyFindManyArgs } from "./PropertyFindManyArgs";
 import { PropertyFindUniqueArgs } from "./PropertyFindUniqueArgs";
 import { Property } from "./Property";
-import { CityFindManyArgs } from "../../city/base/CityFindManyArgs";
-import { City } from "../../city/base/City";
 import { ConfigurationFindManyArgs } from "../../configuration/base/ConfigurationFindManyArgs";
 import { Configuration } from "../../configuration/base/Configuration";
-import { LocalityFindManyArgs } from "../../locality/base/LocalityFindManyArgs";
-import { Locality } from "../../locality/base/Locality";
 import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
+import { City } from "../../city/base/City";
+import { Locality } from "../../locality/base/Locality";
 import { PropertyService } from "../property.service";
 
 @graphql.Resolver(() => Property)
@@ -128,7 +126,21 @@ export class PropertyResolverBase {
     // @ts-ignore
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        cities: args.data.cities
+          ? {
+              connect: args.data.cities,
+            }
+          : undefined,
+
+        localities: args.data.localities
+          ? {
+              connect: args.data.localities,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -167,7 +179,21 @@ export class PropertyResolverBase {
       // @ts-ignore
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          cities: args.data.cities
+            ? {
+                connect: args.data.cities,
+              }
+            : undefined,
+
+          localities: args.data.localities
+            ? {
+                connect: args.data.localities,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -201,32 +227,6 @@ export class PropertyResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => [City])
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "read",
-    possession: "any",
-  })
-  async cities(
-    @graphql.Parent() parent: Property,
-    @graphql.Args() args: CityFindManyArgs,
-    @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<City[]> {
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "City",
-    });
-    const results = await this.service.findCities(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results.map((result) => permission.filter(result));
-  }
-
   @graphql.ResolveField(() => [Configuration])
   @nestAccessControl.UseRoles({
     resource: "Property",
@@ -245,32 +245,6 @@ export class PropertyResolverBase {
       resource: "Configuration",
     });
     const results = await this.service.findConfigurations(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results.map((result) => permission.filter(result));
-  }
-
-  @graphql.ResolveField(() => [Locality])
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "read",
-    possession: "any",
-  })
-  async localities(
-    @graphql.Parent() parent: Property,
-    @graphql.Args() args: LocalityFindManyArgs,
-    @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<Locality[]> {
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "Locality",
-    });
-    const results = await this.service.findLocalities(parent.id, args);
 
     if (!results) {
       return [];
@@ -303,5 +277,53 @@ export class PropertyResolverBase {
     }
 
     return results.map((result) => permission.filter(result));
+  }
+
+  @graphql.ResolveField(() => City, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Property",
+    action: "read",
+    possession: "any",
+  })
+  async cities(
+    @graphql.Parent() parent: Property,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<City | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "City",
+    });
+    const result = await this.service.getCities(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
+  }
+
+  @graphql.ResolveField(() => Locality, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Property",
+    action: "read",
+    possession: "any",
+  })
+  async localities(
+    @graphql.Parent() parent: Property,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Locality | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Locality",
+    });
+    const result = await this.service.getLocalities(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
   }
 }

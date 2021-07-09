@@ -1,13 +1,18 @@
 import * as React from "react";
+
 import {
   List,
   Datagrid,
   ListProps,
   TextField,
+  ReferenceField,
   DateField,
   BooleanField,
 } from "react-admin";
+
 import Pagination from "../Components/Pagination";
+import { CITY_TITLE_FIELD } from "../city/CityTitle";
+import { LOCALITY_TITLE_FIELD } from "../locality/LocalityTitle";
 
 export const PropertyList = (props: ListProps): React.ReactElement => {
   return (
@@ -20,6 +25,9 @@ export const PropertyList = (props: ListProps): React.ReactElement => {
     >
       <Datagrid rowClick="show">
         <TextField label="carpet" source="carpet" />
+        <ReferenceField label="cities" source="city.id" reference="City">
+          <TextField source={CITY_TITLE_FIELD} />
+        </ReferenceField>
         <TextField label="constructionstart" source="constructionstart" />
         <DateField source="createdAt" label="Created At" />
         <TextField label="description" source="description" />
@@ -27,6 +35,13 @@ export const PropertyList = (props: ListProps): React.ReactElement => {
         <BooleanField label="isfeatured" source="isfeatured" />
         <BooleanField label="ispopular" source="ispopular" />
         <BooleanField label="isPromoted" source="isPromoted" />
+        <ReferenceField
+          label="localities"
+          source="locality.id"
+          reference="Locality"
+        >
+          <TextField source={LOCALITY_TITLE_FIELD} />
+        </ReferenceField>
         <TextField label="parking" source="parking" />
         <TextField label="pin" source="pin" />
         <TextField label="possession" source="possession" />

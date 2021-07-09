@@ -2,10 +2,12 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IntNullableFilter } from "../../util/IntNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { CityWhereUniqueInput } from "../../city/base/CityWhereUniqueInput";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
 import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
+import { LocalityWhereUniqueInput } from "../../locality/base/LocalityWhereUniqueInput";
 import { EnumPropertyPostedBy } from "./EnumPropertyPostedBy";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { EnumPropertyStatus } from "./EnumPropertyStatus";
@@ -22,6 +24,18 @@ class PropertyWhereInput {
     nullable: true,
   })
   carpet?: IntNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => CityWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => CityWhereUniqueInput)
+  @IsOptional()
+  @Field(() => CityWhereUniqueInput, {
+    nullable: true,
+  })
+  cities?: CityWhereUniqueInput;
 
   @ApiProperty({
     required: false,
@@ -88,6 +102,18 @@ class PropertyWhereInput {
     nullable: true,
   })
   isPromoted?: BooleanNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => LocalityWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => LocalityWhereUniqueInput)
+  @IsOptional()
+  @Field(() => LocalityWhereUniqueInput, {
+    nullable: true,
+  })
+  localities?: LocalityWhereUniqueInput;
 
   @ApiProperty({
     required: false,

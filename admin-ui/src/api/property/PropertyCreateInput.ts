@@ -1,10 +1,15 @@
+import { CityWhereUniqueInput } from "../city/CityWhereUniqueInput";
+import { LocalityWhereUniqueInput } from "../locality/LocalityWhereUniqueInput";
+
 export type PropertyCreateInput = {
   carpet?: number | null;
+  cities?: CityWhereUniqueInput | null;
   constructionstart?: Date | null;
   description: string;
   isfeatured?: boolean | null;
   ispopular?: boolean | null;
   isPromoted?: boolean | null;
+  localities?: LocalityWhereUniqueInput | null;
   parking?: number | null;
   pin: string;
   possession?: Date | null;

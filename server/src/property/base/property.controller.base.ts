@@ -15,12 +15,8 @@ import { PropertyWhereUniqueInput } from "./PropertyWhereUniqueInput";
 import { PropertyFindManyArgs } from "./PropertyFindManyArgs";
 import { PropertyUpdateInput } from "./PropertyUpdateInput";
 import { Property } from "./Property";
-import { CityWhereInput } from "../../city/base/CityWhereInput";
-import { City } from "../../city/base/City";
 import { ConfigurationWhereInput } from "../../configuration/base/ConfigurationWhereInput";
 import { Configuration } from "../../configuration/base/Configuration";
-import { LocalityWhereInput } from "../../locality/base/LocalityWhereInput";
-import { Locality } from "../../locality/base/Locality";
 import { UserWhereInput } from "../../user/base/UserWhereInput";
 import { User } from "../../user/base/User";
 
@@ -63,9 +59,30 @@ export class PropertyControllerBase {
       );
     }
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        cities: data.cities
+          ? {
+              connect: data.cities,
+            }
+          : undefined,
+
+        localities: data.localities
+          ? {
+              connect: data.localities,
+            }
+          : undefined,
+      },
       select: {
         carpet: true,
+
+        cities: {
+          select: {
+            id: true,
+          },
+        },
+
         constructionstart: true,
         createdAt: true,
         description: true,
@@ -73,6 +90,13 @@ export class PropertyControllerBase {
         isfeatured: true,
         ispopular: true,
         isPromoted: true,
+
+        localities: {
+          select: {
+            id: true,
+          },
+        },
+
         parking: true,
         pin: true,
         possession: true,
@@ -119,6 +143,13 @@ export class PropertyControllerBase {
       ...args,
       select: {
         carpet: true,
+
+        cities: {
+          select: {
+            id: true,
+          },
+        },
+
         constructionstart: true,
         createdAt: true,
         description: true,
@@ -126,6 +157,13 @@ export class PropertyControllerBase {
         isfeatured: true,
         ispopular: true,
         isPromoted: true,
+
+        localities: {
+          select: {
+            id: true,
+          },
+        },
+
         parking: true,
         pin: true,
         possession: true,
@@ -167,6 +205,13 @@ export class PropertyControllerBase {
       where: params,
       select: {
         carpet: true,
+
+        cities: {
+          select: {
+            id: true,
+          },
+        },
+
         constructionstart: true,
         createdAt: true,
         description: true,
@@ -174,6 +219,13 @@ export class PropertyControllerBase {
         isfeatured: true,
         ispopular: true,
         isPromoted: true,
+
+        localities: {
+          select: {
+            id: true,
+          },
+        },
+
         parking: true,
         pin: true,
         possession: true,
@@ -233,9 +285,30 @@ export class PropertyControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          cities: data.cities
+            ? {
+                connect: data.cities,
+              }
+            : undefined,
+
+          localities: data.localities
+            ? {
+                connect: data.localities,
+              }
+            : undefined,
+        },
         select: {
           carpet: true,
+
+          cities: {
+            select: {
+              id: true,
+            },
+          },
+
           constructionstart: true,
           createdAt: true,
           description: true,
@@ -243,6 +316,13 @@ export class PropertyControllerBase {
           isfeatured: true,
           ispopular: true,
           isPromoted: true,
+
+          localities: {
+            select: {
+              id: true,
+            },
+          },
+
           parking: true,
           pin: true,
           possession: true,
@@ -285,6 +365,13 @@ export class PropertyControllerBase {
         where: params,
         select: {
           carpet: true,
+
+          cities: {
+            select: {
+              id: true,
+            },
+          },
+
           constructionstart: true,
           createdAt: true,
           description: true,
@@ -292,6 +379,13 @@ export class PropertyControllerBase {
           isfeatured: true,
           ispopular: true,
           isPromoted: true,
+
+          localities: {
+            select: {
+              id: true,
+            },
+          },
+
           parking: true,
           pin: true,
           possession: true,
@@ -313,170 +407,6 @@ export class PropertyControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Get("/:id/cities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "read",
-    possession: "any",
-  })
-  @swagger.ApiQuery({
-    type: () => CityWhereInput,
-    style: "deepObject",
-    explode: true,
-  })
-  async findManyCities(
-    @common.Req() request: Request,
-    @common.Param() params: PropertyWhereUniqueInput,
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<City[]> {
-    const query: CityWhereInput = request.query;
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "City",
-    });
-    const results = await this.service.findCities(params.id, {
-      where: query,
-      select: {
-        createdAt: true,
-        id: true,
-        name: true,
-        slug: true,
-        updatedAt: true,
-      },
-    });
-    return results.map((result) => permission.filter(result));
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Post("/:id/cities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async createCities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      cities: {
-        connect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Patch("/:id/cities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async updateCities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      cities: {
-        set: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Delete("/:id/cities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async deleteCities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      cities: {
-        disconnect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
@@ -616,170 +546,6 @@ export class PropertyControllerBase {
   ): Promise<void> {
     const data = {
       configurations: {
-        disconnect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Get("/:id/localities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "read",
-    possession: "any",
-  })
-  @swagger.ApiQuery({
-    type: () => LocalityWhereInput,
-    style: "deepObject",
-    explode: true,
-  })
-  async findManyLocalities(
-    @common.Req() request: Request,
-    @common.Param() params: PropertyWhereUniqueInput,
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<Locality[]> {
-    const query: LocalityWhereInput = request.query;
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "Locality",
-    });
-    const results = await this.service.findLocalities(params.id, {
-      where: query,
-      select: {
-        createdAt: true,
-        id: true,
-        name: true,
-        slug: true,
-        updatedAt: true,
-      },
-    });
-    return results.map((result) => permission.filter(result));
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Post("/:id/localities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async createLocalities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      localities: {
-        connect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Patch("/:id/localities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async updateLocalities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      localities: {
-        set: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Property",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Property"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
-  @common.Delete("/:id/localities")
-  @nestAccessControl.UseRoles({
-    resource: "Property",
-    action: "update",
-    possession: "any",
-  })
-  async deleteLocalities(
-    @common.Param() params: PropertyWhereUniqueInput,
-    @common.Body() body: PropertyWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      localities: {
         disconnect: body,
       },
     };

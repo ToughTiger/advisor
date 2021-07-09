@@ -21,7 +21,8 @@ model User {
 
 model Property {
   carpet            Int?
-  cities            City[]
+  cities            City?                 @relation(fields: [citiesId], references: [id])
+  citiesId          String?
   configurations    Configuration[]
   constructionstart DateTime?
   createdAt         DateTime              @default(now())
@@ -30,7 +31,8 @@ model Property {
   isfeatured        Boolean?
   ispopular         Boolean?
   isPromoted        Boolean?
-  localities        Locality[]
+  localities        Locality?             @relation(fields: [localitiesId], references: [id])
+  localitiesId      String?
   parking           Int?
   pin               String
   possession        DateTime?

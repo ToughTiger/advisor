@@ -32,12 +32,12 @@ class Property {
 
   @ApiProperty({
     required: false,
-    type: () => [City],
+    type: () => City,
   })
   @ValidateNested()
   @Type(() => City)
   @IsOptional()
-  cities?: Array<City>;
+  cities?: City | null;
 
   @ApiProperty({
     required: false,
@@ -118,12 +118,12 @@ class Property {
 
   @ApiProperty({
     required: false,
-    type: () => [Locality],
+    type: () => Locality,
   })
   @ValidateNested()
   @Type(() => Locality)
   @IsOptional()
-  localities?: Array<Locality>;
+  localities?: Locality | null;
 
   @ApiProperty({
     required: false,
