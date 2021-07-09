@@ -1,0 +1,64 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt  DateTime   @default(now())
+  firstName  String?
+  id         String     @id @default(cuid())
+  lastName   String?
+  password   String
+  properties Property[]
+  roles      String[]
+  updatedAt  DateTime   @updatedAt
+  username   String     @unique
+}
+
+model Property {
+  carpet            Int?
+  city              String
+  configuration     String?
+  constructionstart DateTime?
+  createdAt         DateTime              @default(now())
+  description       String
+  id                String                @id @default(cuid())
+  isfeatured        Boolean?
+  ispopular         Boolean?
+  isPromoted        Boolean?
+  locality          String?
+  parking           Int?
+  pin               String
+  possession        DateTime?
+  postedBy          EnumPropertyPostedBy?
+  projectaddress    String
+  projectname       String
+  promoteduntil     DateTime?
+  state             String?
+  status            EnumPropertyStatus?
+  type              EnumPropertyType?
+  updatedAt         DateTime              @updatedAt
+  user              User[]
+}
+
+enum EnumPropertyPostedBy {
+  Owner
+  Agent
+  Developer
+}
+
+enum EnumPropertyStatus {
+  ReadtToMove
+  UnderConstruction
+  Resale
+}
+
+enum EnumPropertyType {
+  Luxury
+  Premium
+  Affordable
+}
