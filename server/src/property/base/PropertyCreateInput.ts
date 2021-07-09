@@ -3,12 +3,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsInt,
   IsOptional,
+  ValidateNested,
   IsDate,
   IsString,
   IsBoolean,
   IsEnum,
 } from "class-validator";
+import { CityWhereUniqueInput } from "../../city/base/CityWhereUniqueInput";
 import { Type } from "class-transformer";
+import { LocalityWhereUniqueInput } from "../../locality/base/LocalityWhereUniqueInput";
 import { EnumPropertyPostedBy } from "./EnumPropertyPostedBy";
 import { EnumPropertyStatus } from "./EnumPropertyStatus";
 import { EnumPropertyType } from "./EnumPropertyType";
@@ -24,6 +27,18 @@ class PropertyCreateInput {
     nullable: true,
   })
   carpet?: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => CityWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => CityWhereUniqueInput)
+  @IsOptional()
+  @Field(() => CityWhereUniqueInput, {
+    nullable: true,
+  })
+  cities?: CityWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,
@@ -76,6 +91,18 @@ class PropertyCreateInput {
     nullable: true,
   })
   isPromoted?: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => LocalityWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => LocalityWhereUniqueInput)
+  @IsOptional()
+  @Field(() => LocalityWhereUniqueInput, {
+    nullable: true,
+  })
+  localities?: LocalityWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

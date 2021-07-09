@@ -23,6 +23,15 @@ class PropertyOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  citiesId?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["Asc", "Desc"],
+  })
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   constructionstart?: SortOrder;
 
   @ApiProperty({
@@ -78,6 +87,15 @@ class PropertyOrderByInput {
     nullable: true,
   })
   isPromoted?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["Asc", "Desc"],
+  })
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  localitiesId?: SortOrder;
 
   @ApiProperty({
     required: false,

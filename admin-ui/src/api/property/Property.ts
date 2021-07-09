@@ -5,7 +5,7 @@ import { User } from "../user/User";
 
 export type Property = {
   carpet: number | null;
-  cities?: Array<City>;
+  cities?: City | null;
   configurations?: Array<Configuration>;
   constructionstart: Date | null;
   createdAt: Date;
@@ -14,7 +14,7 @@ export type Property = {
   isfeatured: boolean | null;
   ispopular: boolean | null;
   isPromoted: boolean | null;
-  localities?: Array<Locality>;
+  localities?: Locality | null;
   parking: number | null;
   pin: string;
   possession: Date | null;

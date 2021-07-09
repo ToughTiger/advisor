@@ -268,6 +268,13 @@ export class CityControllerBase {
       where: query,
       select: {
         carpet: true,
+
+        cities: {
+          select: {
+            id: true,
+          },
+        },
+
         constructionstart: true,
         createdAt: true,
         description: true,
@@ -275,6 +282,13 @@ export class CityControllerBase {
         isfeatured: true,
         ispopular: true,
         isPromoted: true,
+
+        localities: {
+          select: {
+            id: true,
+          },
+        },
+
         parking: true,
         pin: true,
         possession: true,

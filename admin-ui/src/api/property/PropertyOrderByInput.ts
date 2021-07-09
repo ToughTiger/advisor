@@ -2,6 +2,7 @@ import { SortOrder } from "../../util/SortOrder";
 
 export type PropertyOrderByInput = {
   carpet?: SortOrder;
+  citiesId?: SortOrder;
   constructionstart?: SortOrder;
   createdAt?: SortOrder;
   description?: SortOrder;
@@ -9,6 +10,7 @@ export type PropertyOrderByInput = {
   isfeatured?: SortOrder;
   ispopular?: SortOrder;
   isPromoted?: SortOrder;
+  localitiesId?: SortOrder;
   parking?: SortOrder;
   pin?: SortOrder;
   possession?: SortOrder;

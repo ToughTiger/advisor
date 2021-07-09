@@ -5,23 +5,37 @@ import {
   SimpleForm,
   EditProps,
   NumberInput,
+  ReferenceInput,
+  SelectInput,
   DateInput,
   TextInput,
   BooleanInput,
-  SelectInput,
   DateTimeInput,
 } from "react-admin";
+
+import { CityTitle } from "../city/CityTitle";
+import { LocalityTitle } from "../locality/LocalityTitle";
 
 export const PropertyEdit = (props: EditProps): React.ReactElement => {
   return (
     <Edit {...props}>
       <SimpleForm>
         <NumberInput step={1} label="carpet" source="carpet" />
+        <ReferenceInput source="city.id" reference="City" label="cities">
+          <SelectInput optionText={CityTitle} />
+        </ReferenceInput>
         <DateInput label="constructionstart" source="constructionstart" />
         <TextInput label="description" multiline source="description" />
         <BooleanInput label="isfeatured" source="isfeatured" />
         <BooleanInput label="ispopular" source="ispopular" />
         <BooleanInput label="isPromoted" source="isPromoted" />
+        <ReferenceInput
+          source="locality.id"
+          reference="Locality"
+          label="localities"
+        >
+          <SelectInput optionText={LocalityTitle} />
+        </ReferenceInput>
         <NumberInput step={1} label="parking" source="parking" />
         <TextInput label="pin" source="pin" />
         <DateInput label="possession" source="possession" />
